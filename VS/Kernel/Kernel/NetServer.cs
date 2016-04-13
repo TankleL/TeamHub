@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Kernel
 {
     public delegate int NetProcedure(NetServer server);
-    abstract public class NetServer : NetObject
+    public abstract class NetServer : NetObject
     {
         #region Constructors
         public NetServer()
@@ -15,12 +15,9 @@ namespace Kernel
         #endregion
 
         #region Interfaces
-        public virtual void Listen()
-        { }
-        public virtual void Accept()
-        { }
-        public virtual void SetProcedure(NetProcedure procedure)
-        { }
+        public abstract void Listen();
+        public abstract void Accept();
+        public abstract void SetProcedure(NetProcedure procedure);
         #endregion
 
         #region Properties

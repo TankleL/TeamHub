@@ -6,18 +6,15 @@ using System.Threading.Tasks;
 
 namespace Kernel
 {
-    public abstract class NetObject
+    public class TCPServer : NetServer
     {
         #region Constructors
-        public NetObject()
-        { }
-        
         #endregion
-        
 
-        #region Interfaces
-        public abstract void Send();
-        public abstract void Receive();
+        #region Methods
+        #endregion
+
+        #region Implementations
         #endregion
     }
 }

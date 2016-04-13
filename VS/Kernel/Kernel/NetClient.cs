@@ -6,18 +6,15 @@ using System.Threading.Tasks;
 
 namespace Kernel
 {
-    public abstract class NetObject
+    public abstract class NetClient : NetObject
     {
         #region Constructors
-        public NetObject()
+        public NetClient()
         { }
-        
         #endregion
-        
 
         #region Interfaces
-        public abstract void Send();
-        public abstract void Receive();
+        public abstract void connect();
         #endregion
     }
 }
