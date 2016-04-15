@@ -22,8 +22,8 @@ namespace TeamHub
 
 
             #region Interfaces
-            public abstract void Send(NetDataPackage package, Socket socket);
-            public abstract void Receive(out NetDataPackage package, Socket socket);
+            public abstract void Send(NetDataPackage package);
+            public abstract void Receive(out NetDataPackage package);
             #endregion
         }
     }

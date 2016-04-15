@@ -10,9 +10,12 @@ namespace TeamHub
 
     namespace Kernel
     {
-        public delegate int NetProcedure(NetServer server);
         public abstract class NetServer : NetObject
         {
+            #region Delegates
+            public delegate void Procedure(NetObject obj);
+            #endregion
+
             #region Constructors
             public NetServer()
             { }
@@ -20,12 +23,11 @@ namespace TeamHub
 
             #region Interfaces
             public abstract void Listen();
-            public abstract void SetProcedure(NetProcedure procedure);
             public abstract void Close();
             #endregion
 
             #region Properties
-            protected NetProcedure _procedure;
+            public Procedure procedure;
             #endregion
         }
     }

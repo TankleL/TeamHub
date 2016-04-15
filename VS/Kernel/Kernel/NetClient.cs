@@ -18,7 +18,9 @@ namespace TeamHub
             #endregion
 
             #region Interfaces
-            public abstract void connect();
+            public abstract void Connect();
+
+            public abstract void Close();
             #endregion
         }
     }

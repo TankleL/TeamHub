@@ -8,36 +8,39 @@ using TeamHub.Kernel;
 
 namespace Kernel_Test
 {
+    class NetProcedure
+    {
+        public void Proc(NetObject obj)
+        {
+            TCPServer server = obj as TCPServer;
+
+            Console.WriteLine("Into Proc");
+
+            NetDataPackage pack;
+            server.Receive(out pack);
+            
+            string text = String.Empty;
+            pack.Read(out text, pack.StringLength());
+
+            Console.WriteLine("From Client:\n" + text);
+        }
+    }
+
     class Program
     {
+
         static void Main(string[] args)
         {
-            //TCPServer server = new TCPServer("127.0.0.1", 5628, 20);
-            //server.Listen();
+            NetProcedure netProc = new NetProcedure();
 
-            NetBuffer nbuf = new NetBuffer(20480);
-            StreamReader rdr = new StreamReader("text.txt");
-
-            string origin = rdr.ReadToEnd();
-            rdr.Close();
-
-            Console.WriteLine("origin:");
-            Console.WriteLine(origin);
-            nbuf.Write(origin);
-
-            byte[] bufferShrinked;
-            byte[] bufferUnShrinked;
-            nbuf.Shrink(out bufferShrinked, true);
-            nbuf.Buffer(out bufferUnShrinked);
-
-            string result;
-            nbuf.Read(out result, nbuf.Count());
-
-            Console.WriteLine("Result:");
-            Console.WriteLine(result);
+            TCPServer server = new TCPServer(5628, 20);
+            server.procedure = new NetServer.Procedure(netProc.Proc);
+            server.Listen();
 
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey(true);
+
+            server.Close();
         }
     }
 }

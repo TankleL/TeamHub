@@ -71,6 +71,11 @@ namespace TeamHub
                 return _count;
             }
 
+            public override uint StringLength()
+            {
+                return _streamWritePtr / 2;
+            }
+
             public override void Clear()
             {
                 try
@@ -110,29 +115,13 @@ namespace TeamHub
                         ++i;
                     }
 
-                    byte[] tempBuffer = new byte[_streamWritePtr];
 
                     if (bCompress)
-                    {
-                        ZlibCodec encoder = new ZlibCodec();
+                    {                        
+                        byte[] compressedBuffer;
 
-                        encoder.InitializeDeflate(CompressionLevel.BestCompression, false);
-
-                        encoder.InputBuffer = buffer;
-                        encoder.SetDeflateParams(CompressionLevel.BestCompression, CompressionStrategy.Default);
-                        encoder.NextIn = 0;
-                        encoder.AvailableBytesIn = buffer.Length;
-                        encoder.AvailableBytesOut = 2048;
-                        encoder.OutputBuffer = tempBuffer;
-                        encoder.Deflate(FlushType.Full);
-                        encoder.EndDeflate();
-
-                        buffer = new byte[encoder.TotalBytesOut];
-
-                        for (int i = 0; i < encoder.TotalBytesOut; ++i)
-                        {
-                            buffer[i] = tempBuffer[i];
-                        }
+                        compressedBuffer = ZlibUtilities.Deflate(buffer);
+                        buffer = compressedBuffer;
                     }
                 }
                 catch(Exception exception)
@@ -366,9 +355,8 @@ namespace TeamHub
 
                         foreach (byte elt in convertedBytes)
                         {
-                            _buffer[_streamWritePtr++] = elt;
+                            _buffer[_streamWritePtr++] = elt;                           
                         }
-
                         ++_count;
                     }
                 }

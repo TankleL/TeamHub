@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
+using Ionic.Zlib;
 
 
 namespace TeamHub
@@ -20,26 +21,35 @@ namespace TeamHub
             {
                 CannotWork = 0,
                 Idle,
-                Listening
+                Listening,
+                Accepted
             }
             #endregion
 
             #region Constructors
-            public TCPServer(string ipAddress, int port, int backlog)
+            public TCPServer(int port, int backlog)
             {
                 _port = port;
                 _backlog = backlog;
-                IPAddress ipAd = IPAddress.Parse(ipAddress);
+                IPAddress ipAd = IPAddress.Any;
                 _mainSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 _mainSocket.Bind(new IPEndPoint(ipAd, _port));
 
                 _state = ServerStates.Idle;
             }
+
+            private TCPServer(Socket mainSocket, int port, ServerStates state)
+            {
+                _mainSocket = mainSocket;
+                _backlog = 0;
+                _port = port;
+                _state = state;
+            }
             #endregion
 
             #region Methods
-            public ServerStates GetState()
-            {
+            public ServerStates GetState()                
+            {   
                 return _state;
             }
             #endregion
@@ -51,14 +61,26 @@ namespace TeamHub
                 Socket acceptedSocket;
                 Thread acceptThread;
 
-                _mainSocket.Listen(_backlog);
-
-                while (true)
+                try
                 {
-                    acceptedSocket = _mainSocket.Accept();
+                    _mainSocket.Listen(_backlog);
 
-                    acceptThread = new Thread(parStart);
-                    acceptThread.Start(acceptedSocket);
+                    // Fot test
+                    Console.WriteLine("Listening...");
+                    // End Of "For test"
+
+                    while (true)
+                    {
+                        acceptedSocket = _mainSocket.Accept();
+
+                        acceptThread = new Thread(parStart);
+                        acceptThread.IsBackground = true;
+                        acceptThread.Start(acceptedSocket);
+                    }
+                }
+                catch(Exception exception)
+                {
+                    throw exception;
                 }
             }
 
@@ -66,10 +88,20 @@ namespace TeamHub
             {
                 Socket socket = param as Socket;
 
-                Console.WriteLine("Accepted client");
-                Console.WriteLine(socket.RemoteEndPoint.AddressFamily.ToString());
+                try
+                {
+                    // For test
+                    // Console.WriteLine("Accepted client");
+                    // Console.WriteLine(socket.RemoteEndPoint.AddressFamily.ToString());
+                    // End of "For test"
 
-                _procedure.Invoke(this);
+                    NetServer acceptServer = new TCPServer(socket, _port, ServerStates.Accepted);
+                    procedure(acceptServer);
+                }
+                catch(Exception exception)
+                {
+                    throw exception;
+                }
             }
             #endregion
 
@@ -77,41 +109,133 @@ namespace TeamHub
             public override void Listen()
             {
                 _listeningThread = new Thread(ListenThread);
+                _listeningThread.IsBackground = true;
                 _listeningThread.Start();
             }
 
             public override void Close()
             {
-                _listeningThread.Abort();
                 _mainSocket.Close();
+                _listeningThread.Abort();
             }
 
-            public override void Send(NetDataPackage package, Socket socket)
+            /// <summary>
+            ///     Formate:
+            ///     -------------------- CommPack ---------------------
+            ///     |   1. The length ............. size of int       |
+            ///     |   2. The compressed flag .... size of bool      |
+            ///     |   3. Data ................... length            |
+            ///     ---------------------------------------------------
+            /// </summary>
+            /// <param name="package"></param>
+            public override void Send(NetDataPackage package)
             {
+                byte[] buffer;
+                byte[] bytes;
 
+                try
+                {
+                    package.Shrink(out buffer, true);
+                    
+                    if (buffer.Length != 0)
+                    {
+                        // 1. The length ............. size of int
+                        bytes = System.BitConverter.GetBytes(buffer.Length);
+                        _mainSocket.Send(bytes, sizeof(int), SocketFlags.None);
+
+                        // 2. The compressed flag .... size of bool
+                        bytes = System.BitConverter.GetBytes(true);
+                        _mainSocket.Send(bytes, sizeof(bool), SocketFlags.None);
+
+                        // 3. Data ................... length
+                        _mainSocket.Send(buffer);
+                    }
+                }
+                catch(Exception exception)
+                {
+                    throw exception;
+                }
             }
 
-            public override void Receive(out NetDataPackage package, Socket socket)
+            /// <summary>
+            ///     Formate:
+            ///     -------------------- CommPack ---------------------
+            ///     |   1. The length ............. size of int       |
+            ///     |   2. The compressed flag .... size of bool      |
+            ///     |   3. Data ................... length            |
+            ///     ---------------------------------------------------
+            /// </summary>
+            /// <param name="package"></param>
+            public override void Receive(out NetDataPackage package)
             {
-                int sizeOfPack = 0;
+                int length = 0;
+                int bytesReceived = 0;
+                byte[] buffer = null;
+                byte[] bytes = new byte[8];
+                bool bCompressed;
+                              
+                byte[] originBuffer = null;
 
-                package = new NetBuffer(sizeOfPack);
-            }
+                try
+                {                    
+                    // 1. The length ............. size of int
+                    bytesReceived = 0;
+                    do
+                    {
+                        bytesReceived += _mainSocket.Receive(bytes, sizeof(int) - bytesReceived, SocketFlags.None);
+                    }
+                    while (bytesReceived < sizeof(int));
 
-            public override void SetProcedure(NetProcedure procedure)
-            {
-                _procedure = procedure;
-            }
+                    length = System.BitConverter.ToInt32(bytes, 0);
+
+
+                    // 2. The compressed flag .... size of bool
+                    bytesReceived = 0;
+                    do
+                    {
+                        bytesReceived += _mainSocket.Receive(bytes, sizeof(bool), SocketFlags.None);
+                    }
+                    while (bytesReceived < sizeof(bool));
+                    bCompressed = System.BitConverter.ToBoolean(bytes, 0);
+
+
+                    // 3. Data ................... length
+                    bytesReceived = 0;
+                    buffer = new byte[length];
+                    do
+                    {
+                        bytesReceived += _mainSocket.Receive(buffer, length - bytesReceived, SocketFlags.None);
+                    }
+                    while (bytesReceived < length);
+
+                    // Fill package
+                    if (bCompressed)   // Try to uncompress data
+                    {
+                        originBuffer = ZlibUtilities.Inflate(buffer);
+                        package = new NetBuffer(originBuffer.Length);
+                        package.Write(originBuffer);
+                    }
+                    else
+                    {
+                        package = new NetBuffer(length);
+                        package.Write(buffer);
+                    }                    
+                }
+                catch(Exception exception)
+                {
+                    throw exception;
+                }
+            }         
 
             #endregion
 
 
             #region Properties
-            private ServerStates _state;
-            private int _port;
-            private int _backlog;
-            private Socket _mainSocket;
-            private Thread _listeningThread;
+            private ServerStates    _state;
+            private int             _port;
+            private int             _backlog;
+            private Socket          _mainSocket;
+            private Thread          _listeningThread;
             #endregion
         }
     }

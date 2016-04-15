@@ -19,6 +19,7 @@ namespace TeamHub
             #region Interfaces
             public abstract int SizeInBytes();
             public abstract uint Count();
+            public abstract uint StringLength();
             public abstract void Resize(int SizeInBytes);
             public abstract void Shrink(out byte[] buffer, bool bCompress);
             public abstract void Buffer(out byte[] buffer);
