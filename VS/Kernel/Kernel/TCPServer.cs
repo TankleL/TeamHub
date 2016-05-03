@@ -204,7 +204,7 @@ namespace TeamHub
                     buffer = new byte[length];
                     do
                     {
-                        bytesReceived += _mainSocket.Receive(buffer, length - bytesReceived, SocketFlags.None);
+                        bytesReceived += _mainSocket.Receive(buffer, bytesReceived, length - bytesReceived, SocketFlags.None);
                     }
                     while (bytesReceived < length);
 
