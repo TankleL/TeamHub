@@ -12,13 +12,13 @@ namespace TeamHub
         public class FileItemServer : DiskNodeItem
         {
             #region Contructors
-            public FileItem(string path,DateTime crttime, DateTime lwtime, DateTime latime, long nodesize, bool islocal)
+            public FileItemServer(string path,DateTime crttime, DateTime lwtime, DateTime latime, long nodesize, bool islocal)
             {
                 SetMembers(path, crttime, lwtime, latime, nodesize, islocal);
                 NodeType        = DiskNodeType.FILE;
 
             }
-            public FileItem(FileInfo fi, bool islocal)
+            public FileItemServer(FileInfo fi, bool islocal)
             {
                 NodePath = fi.FullName;
                 CreationTime = fi.CreationTime;

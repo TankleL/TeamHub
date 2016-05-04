@@ -11,7 +11,7 @@ namespace TeamHub
         public class DirItemClient : DirItemObject
         {
             #region Constructors
-            public DirItemClient(string path, DateTime crttime, DateTime lwtime, DateTime latime, long nodesize, TCPClient tcpClient)
+            public DirItemClient(string path, DateTime crttime, DateTime lwtime, DateTime latime, long nodesize, TCPClient tcpClient = null)
             {
                 _nodePath = path;
                 _creationTime = crttime;
@@ -38,26 +38,7 @@ namespace TeamHub
             /// </summary>
             public override void SetPath(string path)
             {
-                try
-                {
-                    NetBuffer pack = new NetBuffer(2048);
-
-                    pack.Write((int)Operation.OPEN);
-
-                    pack.Write(_nodePath.Length);
-                    pack.Write(_nodePath);
-
-                    pack.Write(0);
-
-                    _client.Connect();
-                    _client.Send(pack);
-
-                    _client.Close();
-                }
-                catch (Exception excp)
-                {
-                    throw excp;
-                }
+                _nodePath = path;
             }
             public override string GetPath()
             {
@@ -98,20 +79,16 @@ namespace TeamHub
             {
                 try
                 {
-                    NetBuffer pack = new NetBuffer(2048);
+                    NetBuffer sendPack = PackOperator.PackClientInfo(Operation.RENAME, _nodePath, name);
+                    _client.Send(sendPack);
+                    
+                    // wait for responding from server
+                    NetDataPackage receivePack;
+                    _client.Receive(out receivePack);
 
-                    pack.Write((int)Operation.RENAME);
 
-                    pack.Write(_nodePath.Length);
-                    pack.Write(_nodePath);
 
-                    pack.Write(name.Length);
-                    pack.Write(name);
 
-                    _client.Connect();
-                    _client.Send(pack);
-
-                    _client.Close();
                 }
                 catch(Exception excp)
                 {
@@ -132,19 +109,8 @@ namespace TeamHub
             {
                 try
                 {
-                    NetBuffer pack = new NetBuffer(2048);
-
-                    pack.Write((int)Operation.DELETE);
-
-                    pack.Write(_nodePath.Length);
-                    pack.Write(_nodePath);
-
-                    pack.Write(0);
-
-                    _client.Connect();
+                    NetBuffer pack = PackOperator.PackClientInfo(Operation.DELETE, _nodePath, "");
                     _client.Send(pack);
-
-                    _client.Close();
                 }
                 catch(Exception excp)
                 {
@@ -186,16 +152,7 @@ namespace TeamHub
                     throw excp;
                 }         
             }
-            /// <summary>
-            ///     Formate:
-            ///     --------------------- CommPack ---------------
-            ///     |   1.The operation ............... int       |
-            ///     |   2.The length of path .......... int       |
-            ///     |   3.The Path .................... string    |
-            ///     |   4.The length of destiny path .. int       |
-            ///     |   5.The destiny path ............ string    |
-            ///     ----------------------------------------------
-            /// </summary>
+           
             public override void CopyTo(string dest_path)
             {
                 try

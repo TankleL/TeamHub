@@ -20,12 +20,6 @@ namespace TeamHub
             {
                 _dirInfo = new DirectoryInfo(path);
             }
-
-            // 解析包并执行包内操作
-            public DirItemServer(NetDataPackage pack)
-            {
-                ParsePack(pack);
-            }
             #endregion
 
             #region Implementations
@@ -181,64 +175,6 @@ namespace TeamHub
             }
             #endregion
 
-            #region Methods
-            public void ParsePack(NetDataPackage pack)
-            {
-                int operation;
-                int pathLength;
-                string path;
-                int destPathLength;
-                string destPath;
-                try
-                {
-                    pack.Read(out operation);
-
-                    pack.Read(out pathLength);
-                    pack.Read(out path, (uint)pathLength);
-
-                    _dirInfo = new DirectoryInfo(path);
-
-                    switch ((Operation)operation)
-                    {
-                        case Operation.COPYTO:
-                            pack.Read(out destPathLength);
-                            pack.Read(out destPath, (uint)destPathLength);
-                            CopyTo(destPath);
-                            break;
-                        case Operation.DELETE:
-                            Delete();
-                            break;
-                        case Operation.MOVETO:
-                            pack.Read(out destPathLength);
-                            pack.Read(out destPath, (uint)destPathLength);
-                            MoveTo(destPath);
-                            break;
-                        case Operation.OPEN:
-                            break;
-                        case Operation.RENAME:
-                            pack.Read(out destPathLength);
-                            pack.Read(out destPath, (uint)destPathLength);
-                            Rename(destPath);
-                            break;
-                        case Operation.CREATESUBDIRTORY:
-                            pack.Read(out destPathLength);
-                            pack.Read(out destPath, (uint)destPathLength);
-                            CreateSubDirectory(destPath);
-                            break;
-                        case Operation.GETSUBITEMS:
-                            NetBuffer sendPack = (NetBuffer)_getSubItemsPack();
-
-                            break;
-                    }
-
-                }
-                catch (Exception excp)
-                {
-                    throw excp;
-                }
-            }
-
-            #endregion
 
             #region PrivateMethods
             private void _copyAll(DirectoryInfo source, DirectoryInfo target)
@@ -280,11 +216,6 @@ namespace TeamHub
                     size += _getDirectorySize(di);
                 }
                 return size;
-            }
-
-            private NetDataPackage _getSubItemsPack()
-            {
-
             }
             #endregion
 
