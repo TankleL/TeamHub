@@ -24,5 +24,10 @@ namespace TeamHub_FrontEnd
         {
             InitializeComponent();
         }
+
+        private void frm_TitleFrame_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
     }
 }
