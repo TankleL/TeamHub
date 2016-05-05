@@ -13,6 +13,13 @@ namespace TeamHub
             #region Interfaces
 
             #endregion
+            #region Implementations
+            public override DiskNodeType GetNodeType()
+            {
+                return DiskNodeType.FILE;
+            }
+            #endregion
+
         }
     }
 }

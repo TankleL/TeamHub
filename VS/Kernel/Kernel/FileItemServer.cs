@@ -9,67 +9,135 @@ namespace TeamHub
 {
     namespace Kernel
     {
-        public class FileItemServer : DiskNodeItem
+        public class FileItemServer : FileItemObject
         {
             #region Contructors
-            public FileItemServer(string path,DateTime crttime, DateTime lwtime, DateTime latime, long nodesize, bool islocal)
+            public FileItemServer(string path)
             {
-                SetMembers(path, crttime, lwtime, latime, nodesize, islocal);
-                NodeType        = DiskNodeType.FILE;
-
+                _fileInfo = new FileInfo(path);
             }
-            public FileItemServer(FileInfo fi, bool islocal)
+            public FileItemServer(FileInfo fi)
             {
-                NodePath = fi.FullName;
-                CreationTime = fi.CreationTime;
-                LastWriteTime = fi.LastWriteTime;
-                LastAccessTime = fi.LastAccessTime;
-                NodeType = DiskNodeType.FILE;
-                NodeSize = fi.Length;
-                IsLocal = islocal;                
+                _fileInfo = fi;
             }
             #endregion
 
-            #region OverrideAbstractMethod
-            public override void Rename(string name)
+            #region Implementations
+            public override void SetPath(string path)
             {
-                if(IsLocal)
+                _fileInfo = new FileInfo(path);
+            }
+            public override string GetPath()
+            {
+                return _fileInfo.FullName;
+            }
+            public override DateTime GetCreationTime()
+            {
+                try
                 {
-
+                    return _fileInfo.CreationTime;
                 }
-                else
+                catch (Exception)
                 {
-                    FileInfo fi = new FileInfo(NodePath);
-                    fi.MoveTo(Path.Combine(fi.Directory.ToString(), name));
+                    
+                    throw;
                 }
                 
             }
+            public override DateTime GetLastWriteTime()
+            {
+                try
+                {
+                    return _fileInfo.LastWriteTime;
+                }
+                catch (Exception)
+                {
+                    
+                    throw;
+                }
+            }
+            public override DateTime GetLastAccessTime()
+            {
+                try
+                {
+                    return _fileInfo.LastAccessTime;
+                }
+                catch (Exception)
+                {
+                    
+                    throw;
+                }
+            }
+            public override long GetSize()
+            {
+                try
+                {
+                    return _fileInfo.Length;
+                }
+                catch (Exception)
+                {
+                    
+                    throw;
+                }
+            }
+
+            public override void Rename(string name)
+            {
+                try
+                {
+                    string destPath = Path.Combine(_fileInfo.DirectoryName, name);
+                    _fileInfo.MoveTo(destPath);
+                }
+                catch (Exception excp)
+                {
+                    
+                    throw excp;
+                }
+            }
             public override void Delete()
             {
-                if(IsLocal)
-                { }
-                else
-                { 
-                    File.Delete(NodePath);
+                try
+                {
+                    _fileInfo.Delete();
                 }
+                catch (Exception)
+                {
+                    
+                    throw;
+                }
+                   
+
             }
             public override void MoveTo(string dest_path)
             {
-                if(IsLocal)
-                { }
-                else
+                try
                 {
-                    File.Move(NodePath, dest_path);
-                }    
+                    _fileInfo.MoveTo(dest_path);
+                }
+                catch (Exception)
+                {
+                    
+                    throw;
+                }
 
             }
             public override void CopyTo(string dest_path)
             {
-                File.Copy(NodePath, dest_path, true);
+                try
+                {
+                    _fileInfo.CopyTo(dest_path, true);
+                }
+                catch (Exception)
+                {
+                    
+                    throw;
+                }
             }
             #endregion
 
-            // ---------------- 增加的成员方法 ---------------------
+            #region Properties
+            private FileInfo _fileInfo;
+            #endregion
 
         }
     }

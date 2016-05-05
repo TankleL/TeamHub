@@ -38,10 +38,6 @@ namespace TeamHub
                     throw excp;
                 }
             }
-            public override DiskNodeType GetNodeType()
-            {
-                return DiskNodeType.DIRECTORY;
-            }
             public override DateTime GetCreationTime()
             {
                 try
@@ -91,10 +87,8 @@ namespace TeamHub
             {
                 try 
                 {
-                    DirectoryInfo thisDir = _dirInfo;
-                    DirectoryInfo parentDirInfo = thisDir.Parent;
-                    string destPath = Path.Combine(parentDirInfo.ToString(), thisDir.Name);
-                    thisDir.MoveTo(destPath);
+                    string destPath = Path.Combine(_dirInfo.Parent.FullName, name);
+                    _dirInfo.MoveTo(destPath);
                 }
                 catch(Exception excp)
                 {
@@ -140,7 +134,7 @@ namespace TeamHub
                 }
                 
             }
-            public DiskNodeItem[] GetSubItems()
+            public override DiskNodeItem[] GetSubItems()
             {
                 try
                 {
@@ -162,7 +156,7 @@ namespace TeamHub
                 }
 
             }
-            public void CreateSubDirectory(string dir_name)
+            public override void CreateSubDirectory(string dir_name)
             {
                 try
                 {
