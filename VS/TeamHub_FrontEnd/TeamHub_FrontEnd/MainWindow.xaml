@@ -1,15 +1,19 @@
 ﻿<Window x:Class="TeamHub_FrontEnd.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="500" Width="900">
+        Title="MainWindow" Height="500" Width="900" WindowStyle="None" BorderThickness="1" BorderBrush="#FF4C8BF5" AllowsTransparency="True" ResizeMode="CanResizeWithGrip">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
-        
-        <Frame Background="DarkCyan" Grid.Row="1"/>
+
+
+        <Frame Background="#FFEAEAEA" Grid.Row="1"/>
+        <Frame Name="frm_TitleFrame" Content="" Margin="0"
+               Background="#FF4C8BF5"
+               MouseLeftButtonDown="frm_TitleFrame_MouseLeftButtonDown">
+        </Frame>
 
 
 
