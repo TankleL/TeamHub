@@ -105,24 +105,44 @@ namespace TeamHub
                 byte[] buffer = null;
                 byte[] bytes = null;
                 bool bCompressed;
+                int bytesReceived = 0;
 
                 byte[] originBuffer = null;
 
                 try
                 {
+
                     package = new NetBuffer(sizeOfPack);
 
                     // 1. The length ............. size of int
-                    _socket.Receive(bytes, sizeof(int), SocketFlags.None);
+                    bytesReceived = 0;
+                    do
+                    {
+                        bytesReceived += _socket.Receive(bytes, sizeof(int) - bytesReceived, SocketFlags.None);
+                    }
+                    while (bytesReceived < sizeof(int));
+
                     length = System.BitConverter.ToInt32(bytes, 0);
 
+
                     // 2. The compressed flag .... size of bool
-                    _socket.Receive(bytes, sizeof(bool), SocketFlags.None);
+                    bytesReceived = 0;
+                    do
+                    {
+                        bytesReceived += _socket.Receive(bytes, sizeof(bool), SocketFlags.None);
+                    }
+                    while (bytesReceived < sizeof(bool));
                     bCompressed = System.BitConverter.ToBoolean(bytes, 0);
 
-                    // 3. Data ................... length
-                    _socket.Receive(buffer, length, SocketFlags.None);
 
+                    // 3. Data ................... length
+                    bytesReceived = 0;
+                    buffer = new byte[length];
+                    do
+                    {
+                        bytesReceived += _socket.Receive(buffer, bytesReceived, length - bytesReceived, SocketFlags.None);
+                    }
+                    while (bytesReceived < length);
 
                     if (bCompressed)   // Try to uncompress data
                     {
