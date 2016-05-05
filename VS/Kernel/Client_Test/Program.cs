@@ -16,13 +16,22 @@ namespace Client_Test
             TCPClient client = new TCPClient("127.0.0.1", 5628);
             client.Connect();
 
-            string text = Console.ReadLine();
-            NetBuffer buffer = new NetBuffer(2048);
-            buffer.Write(text);
+            try
+            {
+                DateTime time = new DateTime(2000,1,2);
+                DirItemClient dir = new DirItemClient(@"E:\Test", time, time, time, 100, client);
+                dir.Rename("Test1");
+                
 
-            client.Send(buffer);
+            }
+            catch (Exception excp)
+            {
+                Console.WriteLine(excp.Message);
+            }
 
-            Console.WriteLine("Press any key to continue...");
+
+            
+
             Console.ReadKey(true);
 
             client.Close();

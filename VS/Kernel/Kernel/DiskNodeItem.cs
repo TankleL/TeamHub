@@ -304,6 +304,11 @@ namespace TeamHub
                         package.Read(out intTemp);
                         package.Read(out path, (uint)intTemp);
 
+                        if (op != Operation.GETSUBITEMS || op != Operation.SUCCESS)
+                        {
+                            subitems = null;
+                            return;
+                        }
                         package.Read(out intTemp);
                         subitems = new DiskNodeItem[intTemp];
 

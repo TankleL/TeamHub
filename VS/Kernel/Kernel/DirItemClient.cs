@@ -21,7 +21,6 @@ namespace TeamHub
                 _nodeSize = nodesize;
                 SetClient(tcpClient);
             }
-            
             #endregion
 
             #region Implementations
@@ -130,6 +129,56 @@ namespace TeamHub
                 }                   
             }
 
+            public override DiskNodeItem[] GetSubItems()
+            {
+                Operation status;
+                string cur_path;
+                DiskNodeItem[] subitems;
+                try
+                {
+                    NetBuffer pack = PackOperator.PackOperationInfo(Operation.GETSUBITEMS, _nodePath, "");
+                    _client.Send(pack);
+
+                    // wait for responding from server
+                    NetDataPackage receivePackage;
+                    _client.Receive(out receivePackage);
+
+
+                    PackOperator.UnpackSubItems(receivePackage,out status,out cur_path, out subitems);
+                    if ( status == Operation.GETSUBITEMS || status == Operation.SUCCESS)
+                    {
+                        return subitems;
+                    }
+                    else
+                    {
+                        throw new Exception(cur_path);                       
+                    }
+
+                }
+                catch (Exception)
+                {
+                    
+                    throw;
+                }
+            }
+            public override void CreateSubDirectory(string dir_name)
+            {
+                try
+                {
+                    NetBuffer pack = PackOperator.PackOperationInfo(Operation.CREATESUBDIRTORY, _nodePath, dir_name);
+                    _client.Send(pack);
+
+                    // wait for responding from server
+                    NetDataPackage receivePackage;
+                    _client.Receive(out receivePackage);
+
+                    FeedbackProcessing(receivePackage);
+                }
+                catch (Exception excp)
+                {
+                    throw excp;
+                }   
+            }
 
             #endregion
 

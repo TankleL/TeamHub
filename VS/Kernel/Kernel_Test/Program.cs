@@ -14,15 +14,17 @@ namespace Kernel_Test
         {
             TCPServer server = obj as TCPServer;
 
-            Console.WriteLine("Into Proc");
-
             NetDataPackage pack;
             server.Receive(out pack);
-            
-            string text = String.Empty;
-            pack.Read(out text, pack.StringLength());
+            DiskNodeItem.Operation status;
+            string path;
+            string dest_path;
+            DiskNodeItem.PackOperator.UnpackOperationInfo(pack,out status,out path,out dest_path);
 
-            Console.WriteLine("From Client:\n" + text);
+            Console.WriteLine(path + dest_path);
+            NetBuffer pack1 = DiskNodeItem.PackOperator.PackOperationInfo(DiskNodeItem.Operation.SUCCESS, "", "");
+            server.Send(pack1);
+
         }
     }
 
