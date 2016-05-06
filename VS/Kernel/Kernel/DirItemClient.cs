@@ -54,7 +54,7 @@ namespace TeamHub
             {
                 try
                 {
-                    NetBuffer sendPack = PackOperator.PackOperationInfo(Operation.RENAME, _nodePath, name);
+                    NetBuffer sendPack = PackOperator.PackOperationInfo(Operation.RENAME, this, name);
                     _client.Send(sendPack);
                     
                     // wait for responding from server
@@ -74,7 +74,7 @@ namespace TeamHub
             {
                 try
                 {
-                    NetBuffer pack = PackOperator.PackOperationInfo(Operation.DELETE, _nodePath, "");
+                    NetBuffer pack = PackOperator.PackOperationInfo(Operation.DELETE, this, "");
                     _client.Send(pack);
 
                     // wait for responding from server
@@ -94,7 +94,7 @@ namespace TeamHub
             {
                 try
                 {
-                    NetBuffer pack = PackOperator.PackOperationInfo(Operation.MOVETO, _nodePath, dest_path);
+                    NetBuffer pack = PackOperator.PackOperationInfo(Operation.MOVETO, this, dest_path);
                     _client.Send(pack);
 
                     // wait for responding from server
@@ -114,7 +114,7 @@ namespace TeamHub
             {
                 try
                 {
-                    NetBuffer pack = PackOperator.PackOperationInfo(Operation.COPYTO,_nodePath, dest_path);
+                    NetBuffer pack = PackOperator.PackOperationInfo(Operation.COPYTO,this, dest_path);
                     _client.Send(pack);
 
                     // wait for responding from server
@@ -136,7 +136,7 @@ namespace TeamHub
                 DiskNodeItem[] subitems;
                 try
                 {
-                    NetBuffer pack = PackOperator.PackOperationInfo(Operation.GETSUBITEMS, _nodePath, "");
+                    NetBuffer pack = PackOperator.PackOperationInfo(Operation.GETSUBITEMS, this, "");
                     _client.Send(pack);
 
                     // wait for responding from server
@@ -165,7 +165,7 @@ namespace TeamHub
             {
                 try
                 {
-                    NetBuffer pack = PackOperator.PackOperationInfo(Operation.CREATESUBDIRTORY, _nodePath, dir_name);
+                    NetBuffer pack = PackOperator.PackOperationInfo(Operation.CREATESUBDIRTORY, this, dir_name);
                     _client.Send(pack);
 
                     // wait for responding from server
@@ -190,9 +190,10 @@ namespace TeamHub
             private void FeedbackProcessing(NetDataPackage receivePackage)
             {
                 Operation status;
+                DiskNodeType node_type;
                 string message1;
                 string message2;
-                PackOperator.UnpackOperationInfo(receivePackage, out status, out message1, out message2);
+                PackOperator.UnpackOperationInfo(receivePackage, out status, out node_type,out message1, out message2);
                 if (status == Operation.SUCCESS)
                     return;
                 else if (status == Operation.ERROR)

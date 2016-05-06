@@ -19,9 +19,15 @@ namespace Client_Test
             try
             {
                 DateTime time = new DateTime(2000,1,2);
-                DirItemClient dir = new DirItemClient(@"E:\Test", time, time, time, 100, client);
-                dir.Rename("Test1");
-                
+                DirItemClient dir = new DirItemClient(@"E:\Test12", time, time, time, 100, client);
+                //dir.Rename("Test1");
+                DiskNodeItem[] items = dir.GetSubItems();
+
+                foreach(DiskNodeItem item in items)
+                {
+                    Console.WriteLine(item.GetPath() + " - " + item.GetNodeType());
+                }
+                Console.WriteLine("Yse");
 
             }
             catch (Exception excp)
@@ -31,7 +37,7 @@ namespace Client_Test
 
 
             
-
+            
             Console.ReadKey(true);
 
             client.Close();

@@ -78,20 +78,23 @@ namespace TeamHub
                 ///     Formate:
                 ///     --------------------- CommPack ---------------
                 ///     |   1.The operation ............... int       |
-                ///     |   2.The length of path .......... int       |
-                ///     |   3.The Path .................... string    |
-                ///     |   4.The length of destiny path .. int       |
-                ///     |   5.The destiny path ............ string    |
+                ///     |   2.The type of node ............ int       |
+                ///     |   3.The length of path .......... int       |
+                ///     |   4.The Path .................... string    |
+                ///     |   5.The length of destiny path .. int       |
+                ///     |   6.The destiny path ............ string    |
                 ///     ----------------------------------------------
                 /// </summary>
-                public static NetBuffer PackOperationInfo(Operation op, string src_path, string dest_path)
+                public static NetBuffer PackOperationInfo(Operation op, DiskNodeType node_type, string src_path, string dest_path)
                 {
                     try
                     {
-                        int packageSize = sizeof(int) * 3 + (src_path.Length + dest_path.Length) * 2;
+                        int packageSize = sizeof(int) * 4 + (src_path.Length + dest_path.Length) * 2;
                         NetBuffer package = new NetBuffer(packageSize);
 
                         package.Write((int)op);
+
+                        package.Write((int)node_type);
 
                         package.Write(src_path.Length);
                         package.Write(src_path);
@@ -106,7 +109,20 @@ namespace TeamHub
                         throw excp;
                     }
                 }
-                public static void UnpackOperationInfo(NetDataPackage package, out Operation op, out string src_path, out string dest_path)
+                public static NetBuffer PackOperationInfo(Operation op, DiskNodeItem src_node, string dest_path)
+                {
+
+                    try
+                    {
+                        return PackOperationInfo(op, src_node.GetNodeType(), src_node.GetPath(), dest_path);
+                    }
+                    catch (Exception)
+                    {
+                        
+                        throw;
+                    }
+                }
+                public static void UnpackOperationInfo(NetDataPackage package, out Operation op, out DiskNodeType node_type, out string src_path, out string dest_path)
                 {
                     int operation;
                     int pathLength;
@@ -114,6 +130,9 @@ namespace TeamHub
                     {
                         package.Read(out operation);
                         op = (Operation)operation;
+
+                        package.Read(out operation);
+                        node_type = (DiskNodeType)operation;
 
                         package.Read(out pathLength);
                         package.Read(out src_path, (uint)pathLength);
@@ -126,21 +145,59 @@ namespace TeamHub
                         throw excp;
                     }
                 }
+                public static void UnpackOperationInfo(NetDataPackage package, out Operation op,out DiskNodeItem src_node, out string dest_path)
+                {
+                    int operation;
+                    int pathLength;
+                    DiskNodeType node_type;
+                    string src_path;
+                    try
+                    {
+                        package.Read(out operation);
+                        op = (Operation)operation;
+
+                        package.Read(out operation);
+                        node_type = (DiskNodeType)operation;
+
+                        package.Read(out pathLength);
+                        package.Read(out src_path, (uint)pathLength);
+
+                        package.Read(out pathLength);
+                        package.Read(out dest_path, (uint)pathLength);
+
+                        switch (node_type)
+                        {
+                            case DiskNodeType.DIRECTORY:
+                                src_node = new DirItemServer(src_path);
+                                break;
+                            case DiskNodeType.FILE:
+                                src_node = new FileItemServer(src_path);
+                                break;
+                            default:
+                                throw new Exception("DiskNodeType Error");
+                        }
+
+                    }
+                    catch (Exception excp)
+                    {
+                        throw excp;
+                    }
+                }
 
                 /// <summary>
                 ///     --------------------- CommPack ---------------
                 ///     |   1.The operation ............... int       |
-                ///     |   2.The length of path .......... int       |
-                ///     |   3.The Path .................... string    |
-                ///     |   4.The CreationTime ............ long      |
-                ///     |   5.The LastWriteTime ........... long      |
-                ///     |   6.The LastAccessTime .......... long      |
-                ///     |   7.The NodeType ................ int       |
+                ///     |   2.The type of node ............ int       |
+                ///     |   3.The length of path .......... int       |
+                ///     |   4.The Path .................... string    |
+                ///     |   5.The CreationTime ............ long      |
+                ///     |   6.The LastWriteTime ........... long      |
+                ///     |   7.The LastAccessTime .......... long      |
                 ///     |   8.The size of node ............ long      |
                 ///     ----------------------------------------------
                 /// </summary>
                 /// <returns></returns>
-                public static NetBuffer PackItemInfo(DirItemServer dir_server)
+                public static NetBuffer PackItemInfo(DiskNodeItem node_server)
                 {
                     int operation;
                     int pathLength;
@@ -156,18 +213,21 @@ namespace TeamHub
                     try
                     {
                         operation = (int)Operation.GETITEMINFO;
-                        path = dir_server.GetPath();
+                        path = node_server.GetPath();
                         pathLength = path.Length;
-                        creationTime = dir_server.GetCreationTime().ToBinary();
-                        lastWriteTime = dir_server.GetLastWriteTime().ToBinary();
-                        lastAccessTime = dir_server.GetLastAccessTime().ToBinary();
-                        nodeType = (int)dir_server.GetNodeType();
-                        nodeSize = dir_server.GetSize();
+                        creationTime = node_server.GetCreationTime().ToBinary();
+                        lastWriteTime = node_server.GetLastWriteTime().ToBinary();
+                        lastAccessTime = node_server.GetLastAccessTime().ToBinary();
+                        nodeType = (int)node_server.GetNodeType();
+                        nodeSize = node_server.GetSize();
 
                         int packageLength = sizeof(int) * 3 + pathLength * 2 + sizeof(long) * 4;
                         package = new NetBuffer(packageLength);
 
                         package.Write(operation);
+
+                        package.Write((int)node_server.GetNodeType());
+
                         package.Write(pathLength);
                         package.Write(path);
 
@@ -179,8 +239,6 @@ namespace TeamHub
 
                         bits = System.BitConverter.GetBytes(lastAccessTime);
                         package.Write(bits);
-
-                        package.Write(nodeType);
 
                         bits = System.BitConverter.GetBytes(nodeSize);
                         package.Write(bits);
@@ -195,7 +253,7 @@ namespace TeamHub
                     }
 
                 }
-                public static void UnpackItemInfo(NetDataPackage package, out Operation op, out string path, out DateTime creation_time, out DateTime lastwrite_time, out DateTime lastaccess_time, out DiskNodeType node_type, out long node_size)
+                public static void UnpackItemInfo(NetDataPackage package, out Operation op, out DiskNodeType node_type ,out string path, out DateTime creation_time, out DateTime lastwrite_time, out DateTime lastaccess_time, out long node_size)
                 {
                     int intTemp;
                     int longSize = sizeof(long);
@@ -204,26 +262,35 @@ namespace TeamHub
                     long longTemp;
                     try
                     {
+                        //1.The operation ............... int 
                         package.Read(out intTemp);
                         op = (Operation)intTemp;
+
+                        // 2.The Type of node ............ int  
+                        package.Read(out intTemp);
+                        node_type = (DiskNodeType)intTemp;
+
+                        // 3.The length of path .......... int           
+                        // 4.The Path .................... string    
                         package.Read(out intTemp);
                         package.Read(out path, (uint)intTemp);
 
+                        // 5.The CreationTime ............ long                                  
                         package.Read(out bits, (uint)longSize);
                         longTemp = System.BitConverter.ToInt64(bits, 0);
                         creation_time = DateTime.FromBinary(longTemp);
 
+                        // 6.The LastWriteTime ........... long  
                         package.Read(out bits, (uint)longSize);
                         longTemp = System.BitConverter.ToInt64(bits, 0);
                         lastwrite_time = DateTime.FromBinary(longTemp);
 
+                        // 7.The LastAccessTime .......... long      
                         package.Read(out bits, (uint)longSize);
                         longTemp = System.BitConverter.ToInt64(bits, 0);
                         lastaccess_time = DateTime.FromBinary(longTemp);
 
-                        package.Read(out intTemp);
-                        node_type = (DiskNodeType)intTemp;
-
+                        // 8.The size of node ............ long  
                         package.Read(out bits, (uint)longSize);
                         node_size = System.BitConverter.ToInt64(bits, 0);
                     }
@@ -242,7 +309,7 @@ namespace TeamHub
                     DateTime lastaccess_time;
                     DiskNodeType node_type;
                     long node_size;
-                    UnpackItemInfo(package, out op, out path, out creation_time, out lastwrite_time, out lastaccess_time, out node_type, out node_size);
+                    UnpackItemInfo(package, out op, out node_type, out path, out creation_time, out lastwrite_time, out lastaccess_time, out node_size);
                     if (node_type == DiskNodeType.DIRECTORY)
                         item = new DirItemClient(path, creation_time, lastwrite_time, lastaccess_time, node_size);
                     else
@@ -253,11 +320,12 @@ namespace TeamHub
                 ///     Formate:
                 ///     --------------------- CommPack ---------------
                 ///     |   1.The operation ............... int       |
-                ///     |   2.The length of path .......... int       |
-                ///     |   3.The Path .................... string    |
-                ///     |   4.The number of SubItems ... .. int       |
-                ///     |   5.The SubItem ................. ServerInfo|
-                ///     |   6.(5)循环 number - 1 次                   |
+                ///     |   2.The type of node ............ int       |
+                ///     |   3.The length of path .......... int       |
+                ///     |   4.The Path .................... string    |
+                ///     |   5.The number of SubItems ... .. int       |
+                ///     |   6.The SubItem ................. ServerInfo|
+                ///     |   7.(5)循环 number - 1 次                   |
                 ///     ----------------------------------------------
                 /// </summary>
                 /// <returns></returns>
@@ -268,22 +336,32 @@ namespace TeamHub
 
                     try
                     {
-                        package = new NetBuffer(BufferMaxSize);
-                        operation = (int)op;
+                        // 获取subitem长度
+                        byte[][] tempBuffer = new byte[subitems.Length][];
+                        int i = 0;
+                        int packageSize = sizeof(int) * 4 + path.Length * 2;
+                        foreach (DiskNodeItem dni in subitems)
+                        {
+                            PackItemInfo(dni).Buffer(out tempBuffer[i++]);
+                            packageSize += tempBuffer[i - 1].Length;
+                        }
 
+                        package = new NetBuffer(packageSize);
+                        operation = (int)op;
                         package.Write(operation);
+
+                        package.Write((int)DiskNodeType.DIRECTORY);
 
                         package.Write(path.Length);
                         package.Write(path);
 
                         package.Write(subitems.Length);
 
-                        byte[] tempBuffer;
-                        foreach (DiskNodeItem dni in subitems)
+                        foreach(byte[] item in tempBuffer)
                         {
-                            PackItemInfo((DirItemServer)dni).Buffer(out tempBuffer);
-                            package.Write(tempBuffer);
+                            package.Write(item);
                         }
+
                         return package;
                     }
                     catch (Exception excp)
@@ -301,10 +379,13 @@ namespace TeamHub
                         package.Read(out intTemp);
                         op = (Operation)intTemp;
 
+                        // 2.The type of node ............ int 
+                        package.Read(out intTemp);
+
                         package.Read(out intTemp);
                         package.Read(out path, (uint)intTemp);
 
-                        if (op != Operation.GETSUBITEMS || op != Operation.SUCCESS)
+                        if (op != Operation.GETSUBITEMS && op != Operation.SUCCESS)
                         {
                             subitems = null;
                             return;
