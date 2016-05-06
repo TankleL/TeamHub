@@ -29,5 +29,10 @@ namespace TeamHub_FrontEnd
         {
         }
 
+        private void btn_max_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
     }
 }

@@ -71,6 +71,36 @@ namespace TeamHub_FrontEnd {
         }
         
         /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap img_maximize_btn {
+            get {
+                object obj = ResourceManager.GetObject("img_maximize_btn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap img_minimize_btn {
+            get {
+                object obj = ResourceManager.GetObject("img_minimize_btn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap img_normalize_btn {
+            get {
+                object obj = ResourceManager.GetObject("img_normalize_btn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 TeamHub 的本地化字符串。
         /// </summary>
         internal static string str_AppTitle {
