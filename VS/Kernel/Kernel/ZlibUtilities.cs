@@ -11,7 +11,7 @@ namespace TeamHub
 
     namespace Kernel
     {
-        class ZlibUtilities
+        public class ZlibUtilities
         {
             public static byte[] Deflate(byte[] data)
             {
