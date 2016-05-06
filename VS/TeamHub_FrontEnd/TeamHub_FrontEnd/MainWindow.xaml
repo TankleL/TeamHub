@@ -1,6 +1,7 @@
 ﻿<Window x:Class="TeamHub_FrontEnd.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:TeamHub_FrontEnd"
         Title="MainWindow" Height="500" Width="900" WindowStyle="None" BorderThickness="1" BorderBrush="#FF4C8BF5" AllowsTransparency="True" ResizeMode="CanResizeWithGrip">
     <Grid>
         <Grid.RowDefinitions>
@@ -14,7 +15,8 @@
                Background="#FF4C8BF5"
                MouseLeftButtonDown="frm_TitleFrame_MouseLeftButtonDown">
         </Frame>
-
+        
+        <local:Sysmenu HorizontalAlignment="Right" VerticalAlignment="Top"/>
 
 
 

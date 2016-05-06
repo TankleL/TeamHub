@@ -349,7 +349,7 @@ namespace TeamHub
                 byte[] convertedBytes;
                 try
                 {
-                    foreach (char character in data)
+                    foreach (var character in data)
                     {
                         convertedBytes = System.BitConverter.GetBytes(character);
 
