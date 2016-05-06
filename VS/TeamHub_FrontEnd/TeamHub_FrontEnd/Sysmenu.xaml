@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="TeamHub_FrontEnd.Sysmenu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="20" d:DesignWidth="120">
+
+    <Grid>
+
+        <!-- Close Button -->
+        <Frame Name="frm_close_bgc" Height="20" Width="40" Margin="80,0,0,0" VerticalAlignment="Top" Opacity="0.0">
+            <Frame.Background>
+                <SolidColorBrush Color="#FFF57575"/>
+            </Frame.Background>            
+        </Frame>
+        <Image Name="btn_close" Height="20" Width="40" Margin="80,0,0,0"
+                       Source="pack://siteoforigin:,,,/Resources/img_close_btn.png" Stretch="None"
+                       VerticalAlignment="Top" HorizontalAlignment="Left" MouseLeftButtonDown="btn_close_MouseLeftButtonDown">
+            <Image.Triggers>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetName="frm_close_bgc"
+                                Storyboard.TargetProperty="Opacity"
+                                From="0.0" To="1.0" Duration="0:0:0.15"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetName="frm_close_bgc"
+                                Storyboard.TargetProperty="Opacity"
+                                From="1.0" To="0.0" Duration="0:0:0.15"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Image.Triggers>
+        </Image>
+        
+        <!-- Maximize Button -->
+        
+    </Grid>
+</UserControl>

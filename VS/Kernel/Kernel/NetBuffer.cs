@@ -112,7 +112,6 @@ namespace TeamHub
                     for (int i = 0; i < _streamWritePtr; ++i)
                     {
                         buffer[i] = _buffer[i];
-                        ++i;
                     }
 
 
@@ -349,7 +348,7 @@ namespace TeamHub
                 byte[] convertedBytes;
                 try
                 {
-                    foreach (char character in data)
+                    foreach (var character in data)
                     {
                         convertedBytes = System.BitConverter.GetBytes(character);
 
@@ -519,7 +518,8 @@ namespace TeamHub
             public override void Read(out string data, uint length)
             {
                 data = String.Empty;
-                char tempChar;
+                char tempChar;                
+
                 try
                 {
                     for (int i = 0; i < length; ++i)
