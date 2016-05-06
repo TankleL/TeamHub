@@ -16,13 +16,28 @@ namespace Client_Test
             TCPClient client = new TCPClient("127.0.0.1", 5628);
             client.Connect();
 
-            string text = Console.ReadLine();
-            NetBuffer buffer = new NetBuffer(2048);
-            buffer.Write(text);
+            try
+            {
+                DateTime time = new DateTime(2000,1,2);
+                DirItemClient dir = new DirItemClient(@"E:\Test12", time, time, time, 100, client);
+                //dir.Rename("Test1");
+                DiskNodeItem[] items = dir.GetSubItems();
 
-            client.Send(buffer);
+                foreach(DiskNodeItem item in items)
+                {
+                    Console.WriteLine(item.GetPath() + " - " + item.GetNodeType());
+                }
+                Console.WriteLine("Yse");
 
-            Console.WriteLine("Press any key to continue...");
+            }
+            catch (Exception excp)
+            {
+                Console.WriteLine(excp.Message);
+            }
+
+
+            
+            
             Console.ReadKey(true);
 
             client.Close();

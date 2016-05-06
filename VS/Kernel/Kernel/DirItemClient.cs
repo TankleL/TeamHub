@@ -21,7 +21,6 @@ namespace TeamHub
                 _nodeSize = nodesize;
                 SetClient(tcpClient);
             }
-            
             #endregion
 
             #region Implementations
@@ -55,7 +54,7 @@ namespace TeamHub
             {
                 try
                 {
-                    NetBuffer sendPack = PackOperator.PackOperationInfo(Operation.RENAME, _nodePath, name);
+                    NetBuffer sendPack = PackOperator.PackOperationInfo(Operation.RENAME, this, name);
                     _client.Send(sendPack);
                     
                     // wait for responding from server
@@ -75,7 +74,7 @@ namespace TeamHub
             {
                 try
                 {
-                    NetBuffer pack = PackOperator.PackOperationInfo(Operation.DELETE, _nodePath, "");
+                    NetBuffer pack = PackOperator.PackOperationInfo(Operation.DELETE, this, "");
                     _client.Send(pack);
 
                     // wait for responding from server
@@ -95,7 +94,7 @@ namespace TeamHub
             {
                 try
                 {
-                    NetBuffer pack = PackOperator.PackOperationInfo(Operation.MOVETO, _nodePath, dest_path);
+                    NetBuffer pack = PackOperator.PackOperationInfo(Operation.MOVETO, this, dest_path);
                     _client.Send(pack);
 
                     // wait for responding from server
@@ -115,7 +114,7 @@ namespace TeamHub
             {
                 try
                 {
-                    NetBuffer pack = PackOperator.PackOperationInfo(Operation.COPYTO,_nodePath, dest_path);
+                    NetBuffer pack = PackOperator.PackOperationInfo(Operation.COPYTO,this, dest_path);
                     _client.Send(pack);
 
                     // wait for responding from server
@@ -130,6 +129,56 @@ namespace TeamHub
                 }                   
             }
 
+            public override DiskNodeItem[] GetSubItems()
+            {
+                Operation status;
+                string cur_path;
+                DiskNodeItem[] subitems;
+                try
+                {
+                    NetBuffer pack = PackOperator.PackOperationInfo(Operation.GETSUBITEMS, this, "");
+                    _client.Send(pack);
+
+                    // wait for responding from server
+                    NetDataPackage receivePackage;
+                    _client.Receive(out receivePackage);
+
+
+                    PackOperator.UnpackSubItems(receivePackage,out status,out cur_path, out subitems);
+                    if ( status == Operation.GETSUBITEMS || status == Operation.SUCCESS)
+                    {
+                        return subitems;
+                    }
+                    else
+                    {
+                        throw new Exception(cur_path);                       
+                    }
+
+                }
+                catch (Exception)
+                {
+                    
+                    throw;
+                }
+            }
+            public override void CreateSubDirectory(string dir_name)
+            {
+                try
+                {
+                    NetBuffer pack = PackOperator.PackOperationInfo(Operation.CREATESUBDIRTORY, this, dir_name);
+                    _client.Send(pack);
+
+                    // wait for responding from server
+                    NetDataPackage receivePackage;
+                    _client.Receive(out receivePackage);
+
+                    FeedbackProcessing(receivePackage);
+                }
+                catch (Exception excp)
+                {
+                    throw excp;
+                }   
+            }
 
             #endregion
 
@@ -141,9 +190,10 @@ namespace TeamHub
             private void FeedbackProcessing(NetDataPackage receivePackage)
             {
                 Operation status;
+                DiskNodeType node_type;
                 string message1;
                 string message2;
-                PackOperator.UnpackOperationInfo(receivePackage, out status, out message1, out message2);
+                PackOperator.UnpackOperationInfo(receivePackage, out status, out node_type,out message1, out message2);
                 if (status == Operation.SUCCESS)
                     return;
                 else if (status == Operation.ERROR)

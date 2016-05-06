@@ -66,7 +66,7 @@ namespace TeamHub
                     _mainSocket.Listen(_backlog);
 
                     // Fot test
-                    Console.WriteLine("Listening...");
+                    //Console.WriteLine("Listening...");
                     // End Of "For test"
 
                     while (true)
