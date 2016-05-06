@@ -132,23 +132,42 @@ namespace TeamHub
             {
                 byte[] buffer;
                 byte[] bytes;
+                int bytesSent = 0;
 
                 try
                 {
                     package.Shrink(out buffer, true);
-                    
+
                     if (buffer.Length != 0)
                     {
                         // 1. The length ............. size of int
                         bytes = System.BitConverter.GetBytes(buffer.Length);
-                        _mainSocket.Send(bytes, sizeof(int), SocketFlags.None);
+
+                        bytesSent = 0;
+                        do
+                        {
+                            bytesSent += _mainSocket.Send(bytes, bytesSent, sizeof(int) - bytesSent, SocketFlags.None);
+                        }
+                        while (bytesSent < sizeof(int));
 
                         // 2. The compressed flag .... size of bool
                         bytes = System.BitConverter.GetBytes(true);
-                        _mainSocket.Send(bytes, sizeof(bool), SocketFlags.None);
+
+                        bytesSent = 0;
+                        do
+                        {
+                            bytesSent += _mainSocket.Send(bytes, bytesSent, sizeof(bool) - bytesSent, SocketFlags.None);
+                        }
+                        while (bytesSent < sizeof(bool));
 
                         // 3. Data ................... length
-                        _mainSocket.Send(buffer);
+
+                        bytesSent = 0;
+                        do
+                        {
+                            bytesSent += _mainSocket.Send(buffer, bytesSent, buffer.Length - bytesSent, SocketFlags.None);
+                        }
+                        while (bytesSent < buffer.Length);
                     }
                 }
                 catch(Exception exception)
@@ -193,7 +212,7 @@ namespace TeamHub
                     bytesReceived = 0;
                     do
                     {
-                        bytesReceived += _mainSocket.Receive(bytes, sizeof(bool), SocketFlags.None);
+                        bytesReceived += _mainSocket.Receive(bytes, bytesReceived, sizeof(bool) - bytesReceived, SocketFlags.None);
                     }
                     while (bytesReceived < sizeof(bool));
                     bCompressed = System.BitConverter.ToBoolean(bytes, 0);
