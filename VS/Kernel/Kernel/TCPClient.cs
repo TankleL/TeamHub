@@ -64,6 +64,7 @@ namespace TeamHub
             {
                 byte[] buffer;
                 byte[] bytes;
+                int bytesSent = 0;
 
                 try
                 {
@@ -73,14 +74,32 @@ namespace TeamHub
                     {
                         // 1. The length ............. size of int
                         bytes = System.BitConverter.GetBytes(buffer.Length);
-                        _socket.Send(bytes, sizeof(int), SocketFlags.None);
+
+                        bytesSent = 0;
+                        do
+                        {
+                            bytesSent += _socket.Send(bytes, bytesSent, sizeof(int) - bytesSent, SocketFlags.None);
+                        }
+                        while(bytesSent < sizeof(int));
 
                         // 2. The compressed flag .... size of bool
                         bytes = System.BitConverter.GetBytes(true);
-                        _socket.Send(bytes, sizeof(bool), SocketFlags.None);
+
+                        bytesSent = 0;
+                        do
+                        {
+                            bytesSent += _socket.Send(bytes, bytesSent, sizeof(bool) - bytesSent, SocketFlags.None);
+                        }
+                        while (bytesSent < sizeof(bool));
 
                         // 3. Data ................... length
-                        _socket.Send(buffer);
+
+                        bytesSent = 0;
+                        do
+                        {
+                            bytesSent += _socket.Send(buffer, bytesSent, buffer.Length - bytesSent, SocketFlags.None);
+                        }
+                        while (bytesSent < buffer.Length);
                     }
                 }
                 catch (Exception exception)
@@ -100,37 +119,56 @@ namespace TeamHub
             /// <param name="package"></param>
             public override void Receive(out NetDataPackage package)
             {
-                int sizeOfPack = 0;
                 int length = 0;
+                int bytesReceived = 0;
                 byte[] buffer = null;
-                byte[] bytes = null;
+                byte[] bytes = new byte[8];
                 bool bCompressed;
 
                 byte[] originBuffer = null;
 
                 try
                 {
-                    package = new NetBuffer(sizeOfPack);
-
                     // 1. The length ............. size of int
-                    _socket.Receive(bytes, sizeof(int), SocketFlags.None);
+                    bytesReceived = 0;
+                    do
+                    {
+                        bytesReceived += _socket.Receive(bytes, sizeof(int) - bytesReceived, SocketFlags.None);
+                    }
+                    while (bytesReceived < sizeof(int));
+
                     length = System.BitConverter.ToInt32(bytes, 0);
 
+
                     // 2. The compressed flag .... size of bool
-                    _socket.Receive(bytes, sizeof(bool), SocketFlags.None);
+                    bytesReceived = 0;
+                    do
+                    {
+                        bytesReceived += _socket.Receive(bytes, bytesReceived, sizeof(bool) - bytesReceived, SocketFlags.None);
+                    }
+                    while (bytesReceived < sizeof(bool));
                     bCompressed = System.BitConverter.ToBoolean(bytes, 0);
 
+
                     // 3. Data ................... length
-                    _socket.Receive(buffer, length, SocketFlags.None);
+                    bytesReceived = 0;
+                    buffer = new byte[length];
+                    do
+                    {
+                        bytesReceived += _socket.Receive(buffer, bytesReceived, length - bytesReceived, SocketFlags.None);
+                    }
+                    while (bytesReceived < length);
 
-
+                    // Fill package
                     if (bCompressed)   // Try to uncompress data
                     {
                         originBuffer = ZlibUtilities.Inflate(buffer);
+                        package = new NetBuffer(originBuffer.Length);
                         package.Write(originBuffer);
                     }
                     else
                     {
+                        package = new NetBuffer(length);
                         package.Write(buffer);
                     }
                 }

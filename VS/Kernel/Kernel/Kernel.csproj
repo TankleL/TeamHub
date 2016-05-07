@@ -42,6 +42,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DirItemClient.cs" />
+    <Compile Include="DirItemObject.cs" />
+    <Compile Include="DirItemServer.cs" />
+    <Compile Include="DiskNodeItem.cs" />
+    <Compile Include="FileItemClient.cs" />
+    <Compile Include="FileItemObject.cs" />
+    <Compile Include="FileItemServer.cs" />
     <Compile Include="NetBuffer.cs" />
     <Compile Include="NetClient.cs" />
     <Compile Include="NetDataPackage.cs" />
