@@ -1,0 +1,3 @@
+Blue:	#FF4C8BF5;
+Green:	#FF00CA05;
+Red:	#FFDE5145;
