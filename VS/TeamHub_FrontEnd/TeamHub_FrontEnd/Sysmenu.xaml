@@ -82,7 +82,7 @@
         </Frame>
         <Image Name="btn_min" Height="20" Width="40" Margin="0,0,0,0"
                        Source="pack://siteoforigin:,,,/Resources/img_minimize_btn.png" Stretch="None"
-                       VerticalAlignment="Top" HorizontalAlignment="Left" MouseLeftButtonDown="btn_max_MouseLeftButtonDown">
+                       VerticalAlignment="Top" HorizontalAlignment="Left" MouseLeftButtonDown="btn_min_MouseLeftButtonDown">
             <Image.Triggers>
                 <EventTrigger RoutedEvent="MouseEnter">
                     <BeginStoryboard>

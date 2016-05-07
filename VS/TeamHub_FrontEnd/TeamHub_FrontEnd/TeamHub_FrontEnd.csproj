@@ -62,6 +62,7 @@
     <Compile Include="Sysmenu.xaml.cs">
       <DependentUpon>Sysmenu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Win32.cs" />
     <Page Include="FileDriver.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
