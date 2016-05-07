@@ -73,6 +73,16 @@ namespace TeamHub_FrontEnd {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap img_default_avartar {
+            get {
+                object obj = ResourceManager.GetObject("img_default_avartar", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap img_maximize_btn {
             get {
                 object obj = ResourceManager.GetObject("img_maximize_btn", resourceCulture);
@@ -101,11 +111,41 @@ namespace TeamHub_FrontEnd {
         }
         
         /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap img_setting_btn {
+            get {
+                object obj = ResourceManager.GetObject("img_setting_btn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似于 (Icon) 的 System.Drawing.Icon 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Icon MainIcon {
+            get {
+                object obj = ResourceManager.GetObject("MainIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 TeamHub 的本地化字符串。
         /// </summary>
         internal static string str_AppTitle {
             get {
                 return ResourceManager.GetString("str_AppTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap TopLogo {
+            get {
+                object obj = ResourceManager.GetObject("TopLogo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

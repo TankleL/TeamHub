@@ -90,10 +90,15 @@ namespace TeamHub_FrontEnd
                 ucl_Sysmenu.SetMaximizeIcon();
             }
         }
-
+        
         private void btn_min_click(object sender, EventArgs e)
         {
             this.WindowState = System.Windows.WindowState.Minimized;
+        }
+
+        private void frm_TitleFrame_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            btn_max_click(sender, e);
         }
 
         #endregion // Events
@@ -303,12 +308,5 @@ namespace TeamHub_FrontEnd
 
         #endregion // Front-Layer Operations
 
-
-        // for test
-        private int _theme = 1;
-        private void btn_1_Click(object sender, RoutedEventArgs e)
-        {
-            ChangedThemeColor((ThemeColor)((_theme++) % 3 + 1));
-        }
     }
 }
