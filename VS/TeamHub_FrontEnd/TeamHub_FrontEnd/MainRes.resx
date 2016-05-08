@@ -121,7 +121,34 @@
   <data name="img_close_btn" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\img_close_btn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="img_maximize_btn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\img_maximize_btn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_minimize_btn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\img_minimize_btn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_normalize_btn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\img_normalize_btn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MainIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\MainIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="str_AppTitle" xml:space="preserve">
     <value>TeamHub</value>
+  </data>
+  <data name="TopLogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\TopLogo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_default_avartar" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\img_default_avartar.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_setting_btn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\img_setting_btn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_message_btn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\img_message_btn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_redpoint" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\img_redpoint.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
