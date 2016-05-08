@@ -327,7 +327,7 @@ namespace TeamHub_FrontEnd
                     break;
 
                 case ThemeColor.ConnectingTheme:
-                    clr.R = 0x13; clr.G = 0xCA; clr.B = 0x04;
+                    clr.R = 0x75; clr.G = 0xBC; clr.B = 0x75;
                     break;
 
                 case ThemeColor.Teamwork:
