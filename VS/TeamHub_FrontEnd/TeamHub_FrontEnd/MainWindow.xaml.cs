@@ -80,13 +80,13 @@ namespace TeamHub_FrontEnd
             if (this.WindowState == System.Windows.WindowState.Normal)
             {
                 this.WindowState = System.Windows.WindowState.Maximized;
-                topGrid.Margin = new Thickness(0, 0, 0, 0);
+                this.BorderThickness = new Thickness(0, 0, 0, 0);
                 ucl_Sysmenu.SetNormalizeIcon();
             }
             else if (this.WindowState == System.Windows.WindowState.Maximized)
             {
                 this.WindowState = System.Windows.WindowState.Normal;
-                topGrid.Margin = new Thickness(this._customBorderThickness, this._customBorderThickness, this._customBorderThickness, this._customBorderThickness);
+                this.BorderThickness = new Thickness(this._customBorderThickness, this._customBorderThickness, this._customBorderThickness, this._customBorderThickness);
                 ucl_Sysmenu.SetMaximizeIcon();
             }
         }
@@ -101,6 +101,51 @@ namespace TeamHub_FrontEnd
             btn_max_click(sender, e);
         }
 
+
+        private void btn_FileDriver_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+            btn_FileDriver.Foreground = Brushes.Black;
+            frm_FileDriver.Opacity = 1.0;
+
+            btn_Connecting.Foreground = Brushes.White;
+            frm_Connecting.Opacity = 0.0;
+
+            btn_Teamworks.Foreground = Brushes.White;
+            frm_Teamworks.Opacity = 0.0;
+
+            ChangedThemeColor(ThemeColor.FileDriverTheme);
+        }
+
+        private void btn_Connecting_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+            btn_FileDriver.Foreground = Brushes.White;
+            frm_FileDriver.Opacity = 0.0;
+
+            btn_Connecting.Foreground = Brushes.Black;
+            frm_Connecting.Opacity = 1.0;
+
+            btn_Teamworks.Foreground = Brushes.White;
+            frm_Teamworks.Opacity = 0.0;
+
+            ChangedThemeColor(ThemeColor.ConnectingTheme);
+        }
+
+        private void btn_Teamworks_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+            btn_FileDriver.Foreground = Brushes.White;
+            frm_FileDriver.Opacity = 0.0;
+
+            btn_Connecting.Foreground = Brushes.White;
+            frm_Connecting.Opacity = 0.0;
+
+            btn_Teamworks.Foreground = Brushes.Black;
+            frm_Teamworks.Opacity = 1.0;
+
+            ChangedThemeColor(ThemeColor.Teamwork);
+        }
         #endregion // Events
 
         // WndProc
@@ -307,6 +352,10 @@ namespace TeamHub_FrontEnd
         private int _customBorderThickness = 15;
 
         #endregion // Front-Layer Operations
+
+ 
+
+        
 
     }
 }
