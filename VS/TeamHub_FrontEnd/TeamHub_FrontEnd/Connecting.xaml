@@ -3,12 +3,36 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TeamHub_FrontEnd"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
-	Title="Connecting">
+      d:DesignHeight="424" d:DesignWidth="691"      
+      Title="Connecting">
 
-    <Grid>
-        <Label Content="&lt;Page Connecting&gt;" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Label Content="&lt;Page Connecting&gt;" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="131,195,0,0"/>
+    <Grid Background="WhiteSmoke">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="75"/>
+            <ColumnDefinition Width="21*"/>
+            <ColumnDefinition Width="50"/>
+        </Grid.ColumnDefinitions>
+        <!-- <Label Content="&lt;Page Connecting&gt;" HorizontalAlignment="Left" VerticalAlignment="Top"/> 
+        <Label Content="&lt;Page Connecting&gt;" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="131,195,0,0"/> -->
+
+        <Frame Background="Gainsboro" Grid.Column="0" Grid.ColumnSpan="1"/>
+        <Frame Background="Gainsboro" Grid.Column="2" Grid.ColumnSpan="1"/>
+
+        <Frame Background="WhiteSmoke" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Left" Width="50">
+            <Frame.Effect>
+                <DropShadowEffect Direction="175" BlurRadius="8" ShadowDepth="9" Color="#FFDADADA"/>
+            </Frame.Effect>
+        </Frame>
+        <Frame Background="WhiteSmoke" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Right" Width="50">
+            <Frame.Effect>
+                <DropShadowEffect Direction="5" BlurRadius="8" ShadowDepth="9" Color="#FFDADADA"/>
+            </Frame.Effect>
+        </Frame>
+        
+        <Frame Background="WhiteSmoke" Grid.Column="1" Grid.ColumnSpan="1"/>
+        
+
     </Grid>
 </Page>
