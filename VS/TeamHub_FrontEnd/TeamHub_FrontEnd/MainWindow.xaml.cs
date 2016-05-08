@@ -44,6 +44,8 @@ namespace TeamHub_FrontEnd
             ucl_Sysmenu.closeButtonClickEventHandler += btn_close_click;
             ucl_Sysmenu.maxButtonClickEventHandler += btn_max_click;
             ucl_Sysmenu.minButtonClickEventHandler += btn_min_click;
+
+            frm_Browser.NavigationUIVisibility = NavigationUIVisibility.Hidden;
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -115,6 +117,9 @@ namespace TeamHub_FrontEnd
             frm_Teamworks.Opacity = 0.0;
 
             ChangedThemeColor(ThemeColor.FileDriverTheme);
+
+            frm_Browser.Navigate(new Uri("FileDriver.xaml", UriKind.Relative));
+            frm_Browser.NavigationService.RemoveBackEntry();
         }
 
         private void btn_Connecting_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -130,6 +135,9 @@ namespace TeamHub_FrontEnd
             frm_Teamworks.Opacity = 0.0;
 
             ChangedThemeColor(ThemeColor.ConnectingTheme);
+
+            frm_Browser.Navigate(new Uri("Connecting.xaml", UriKind.Relative));
+            frm_Browser.NavigationService.RemoveBackEntry();
         }
 
         private void btn_Teamworks_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -145,6 +153,9 @@ namespace TeamHub_FrontEnd
             frm_Teamworks.Opacity = 1.0;
 
             ChangedThemeColor(ThemeColor.Teamwork);
+
+            frm_Browser.Navigate(new Uri("Teamworks.xaml", UriKind.Relative));
+            frm_Browser.NavigationService.RemoveBackEntry();
         }
         #endregion // Events
 
@@ -316,7 +327,7 @@ namespace TeamHub_FrontEnd
                     break;
 
                 case ThemeColor.ConnectingTheme:
-                    clr.R = 0x00; clr.G = 0xCA; clr.B = 0x05;
+                    clr.R = 0x13; clr.G = 0xCA; clr.B = 0x04;
                     break;
 
                 case ThemeColor.Teamwork:
