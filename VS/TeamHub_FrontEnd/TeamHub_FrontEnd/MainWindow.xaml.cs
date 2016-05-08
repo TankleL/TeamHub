@@ -80,13 +80,13 @@ namespace TeamHub_FrontEnd
             if (this.WindowState == System.Windows.WindowState.Normal)
             {
                 this.WindowState = System.Windows.WindowState.Maximized;
-                topGrid.Margin = new Thickness(0, 0, 0, 0);
+                this.BorderThickness = new Thickness(0, 0, 0, 0);
                 ucl_Sysmenu.SetNormalizeIcon();
             }
             else if (this.WindowState == System.Windows.WindowState.Maximized)
             {
                 this.WindowState = System.Windows.WindowState.Normal;
-                topGrid.Margin = new Thickness(this._customBorderThickness, this._customBorderThickness, this._customBorderThickness, this._customBorderThickness);
+                this.BorderThickness = new Thickness(this._customBorderThickness, this._customBorderThickness, this._customBorderThickness, this._customBorderThickness);
                 ucl_Sysmenu.SetMaximizeIcon();
             }
         }
