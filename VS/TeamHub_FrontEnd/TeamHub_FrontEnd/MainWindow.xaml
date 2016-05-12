@@ -59,19 +59,19 @@
         <local:Notifier HorizontalAlignment="Right" Width="200" Height="30" VerticalAlignment="Center" Margin="0,0,330,0"/>
 
 
-        <Frame Name="frm_FileDriver" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="120,0,0,0" Width="50" Height="30" Background="WhiteSmoke" BorderThickness="1,1,1,0" BorderBrush="#FF878787" />
+        <Canvas Name="frm_FileDriver" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="120,0,0,0" Width="50" Height="30" Background="WhiteSmoke" />
         <Label Name="btn_FileDriver" Content="文件" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="120,0,0,0" Width="50"
                Foreground="Black" FontSize="14" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="30" 
                MouseLeftButtonDown="btn_FileDriver_MouseLeftButtonDown"/>
 
-        <Frame Name="frm_Connecting" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="170,0,0,0" Width="50" Height="30" Background="WhiteSmoke"
-               Opacity="0.0" BorderBrush="#FF878787" BorderThickness="1,1,1,0"/>
+        <Canvas Name="frm_Connecting" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="170,0,0,0" Width="50" Height="30" Background="WhiteSmoke"
+               Opacity="0.0"/>
         <Label Name="btn_Connecting" Content="通信" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="170,0,0,0" Width="50"
                Foreground="White" FontSize="14" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="30"                
                MouseLeftButtonDown="btn_Connecting_MouseLeftButtonDown"/>
 
-        <Frame Name="frm_Teamworks" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="220,0,0,0" Width="50" Height="30" Background="WhiteSmoke"
-               Opacity="0.0" BorderThickness="1,1,1,0" BorderBrush="#FF878787"/>
+        <Canvas Name="frm_Teamworks" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="220,0,0,0" Width="50" Height="30" Background="WhiteSmoke"
+               Opacity="0.0"/>
         <Label Name="btn_Teamworks" Content="团队" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="220,0,0,0" Width="50"
                Foreground="White" FontSize="14" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="30"                
                MouseLeftButtonDown="btn_Teamworks_MouseLeftButtonDown"/>
