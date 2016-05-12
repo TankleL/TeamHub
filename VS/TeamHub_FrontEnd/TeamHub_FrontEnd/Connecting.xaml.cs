@@ -24,5 +24,57 @@ namespace TeamHub_FrontEnd
         {
             InitializeComponent();
         }
+
+        private void btn_Members_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            btn_Members.Visibility = Visibility.Hidden;
+            btn_MembersHidden.Visibility = Visibility.Visible;
+
+            btn_Broadcast.Visibility = Visibility.Visible;
+            btn_BroadcastHidden.Visibility = Visibility.Hidden;
+            btn_Board.Visibility = Visibility.Visible;
+            btn_BoardHidden.Visibility = Visibility.Hidden;
+            btn_Groups.Visibility = Visibility.Visible;
+            btn_GroupsHidden.Visibility = Visibility.Hidden;
+        }
+
+        private void btn_Groups_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            btn_Groups.Visibility = Visibility.Hidden;
+            btn_GroupsHidden.Visibility = Visibility.Visible;
+
+            btn_Broadcast.Visibility = Visibility.Visible;
+            btn_BroadcastHidden.Visibility = Visibility.Hidden;
+            btn_Board.Visibility = Visibility.Visible;
+            btn_BoardHidden.Visibility = Visibility.Hidden;
+            btn_Members.Visibility = Visibility.Visible;
+            btn_MembersHidden.Visibility = Visibility.Hidden;
+        }
+
+        private void btn_Broadcast_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            btn_Broadcast.Visibility = Visibility.Hidden;
+            btn_BroadcastHidden.Visibility = Visibility.Visible;
+
+            btn_Groups.Visibility = Visibility.Visible;
+            btn_GroupsHidden.Visibility = Visibility.Hidden;
+            btn_Members.Visibility = Visibility.Visible;
+            btn_MembersHidden.Visibility = Visibility.Hidden;
+            btn_Board.Visibility = Visibility.Visible;
+            btn_BoardHidden.Visibility = Visibility.Hidden;
+        }
+
+        private void btn_Board_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            btn_Board.Visibility = Visibility.Hidden;
+            btn_BoardHidden.Visibility = Visibility.Visible;
+
+            btn_Broadcast.Visibility = Visibility.Visible;
+            btn_BroadcastHidden.Visibility = Visibility.Hidden;
+            btn_Groups.Visibility = Visibility.Visible;
+            btn_GroupsHidden.Visibility = Visibility.Hidden;
+            btn_Members.Visibility = Visibility.Visible;
+            btn_MembersHidden.Visibility = Visibility.Hidden;
+        }
     }
 }

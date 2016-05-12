@@ -48,10 +48,20 @@
         </Frame>
         
         <Canvas Background="WhiteSmoke" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <Label Name="btn_MembersHidden" Content="成 员" Height="30" Width="60" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="20,0,0,0"
+                   HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Green"  MouseLeftButtonDown="btn_Members_MouseLeftButtonDown" FontWeight="Bold" />
+            <Label Name="btn_GroupsHidden" Content="群 组" Height="30" Width="60" HorizontalContentAlignment="Center" Visibility="Hidden"
+                   VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="80,0,0,0" Foreground="Green" FontWeight="Bold"
+                   MouseLeftButtonDown="btn_Groups_MouseLeftButtonDown"/>
+            <Label Name="btn_BroadcastHidden" Content="广 播" Height="30" Width="60" HorizontalContentAlignment="Center" Visibility="Hidden"
+                   VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="140,0,0,0"  FontWeight="Bold"
+                    Foreground="Green"/>
+            <Label Name="btn_BoardHidden" Content="白 板" Height="30" Width="60" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" Visibility="Hidden"
+                   HorizontalAlignment="Left" VerticalAlignment="Center" Margin="200,0,0,0" Foreground="Green" MouseLeftButtonDown="btn_Board_MouseLeftButtonDown"/>
             
             <Label Name="btn_Members" Content="成 员" Height="30" Width="60" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="20,0,0,0"
-                   HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Black" FontWeight="Bold" >
-                <Label.Triggers>
+                   HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Black"  MouseLeftButtonDown="btn_Members_MouseLeftButtonDown" Visibility="Hidden">                
+                <Label.Triggers>                    
                     <EventTrigger RoutedEvent="MouseEnter">
                         <BeginStoryboard>
                             <Storyboard>
@@ -62,7 +72,8 @@
                             </Storyboard>
                         </BeginStoryboard>
                     </EventTrigger>
-                    <EventTrigger RoutedEvent="MouseLeave">
+                    
+                    <EventTrigger RoutedEvent="MouseLeave">                        
                         <BeginStoryboard>
                             <Storyboard>
                                 <ColorAnimation 
@@ -72,10 +83,13 @@
                             </Storyboard>
                         </BeginStoryboard>
                     </EventTrigger>
-                </Label.Triggers>
+                    
+                </Label.Triggers>                
             </Label>
             
-            <Label Name="btn_Groups" Content="群 组" Height="30" Width="60" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="80,0,0,0" Foreground="Black">
+            <Label Name="btn_Groups" Content="群 组" Height="30" Width="60" HorizontalContentAlignment="Center"
+                   VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="80,0,0,0" Foreground="Black"
+                   MouseLeftButtonDown="btn_Groups_MouseLeftButtonDown">
                 <Label.Triggers>
                     <EventTrigger RoutedEvent="MouseEnter">
                         <BeginStoryboard>
@@ -100,7 +114,9 @@
                 </Label.Triggers>
             </Label>
             
-            <Label Name="btn_Broadcast" Content="广 播" Height="30" Width="60" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="140,0,0,0" Foreground="Black">
+            <Label Name="btn_Broadcast" Content="广 播" Height="30" Width="60" HorizontalContentAlignment="Center" 
+                   VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="140,0,0,0" 
+                   MouseLeftButtonDown="btn_Broadcast_MouseLeftButtonDown"  Foreground="Black">
                 <Label.Triggers>
                     <EventTrigger RoutedEvent="MouseEnter">
                         <BeginStoryboard>
@@ -125,7 +141,8 @@
                 </Label.Triggers>
             </Label>
             
-            <Label Name="btn_Board" Content="白 板" Height="30" Width="60" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="200,0,0,0" Foreground="Black">
+            <Label Name="btn_Board" Content="白 板" Height="30" Width="60" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                   HorizontalAlignment="Left" VerticalAlignment="Center" Margin="200,0,0,0" Foreground="Black" MouseLeftButtonDown="btn_Board_MouseLeftButtonDown">
                 <Label.Triggers>
                     <EventTrigger RoutedEvent="MouseEnter">
                         <BeginStoryboard>
@@ -149,8 +166,10 @@
                     </EventTrigger>
                 </Label.Triggers>
             </Label>
+            
         </Canvas>
-
+        <Separator VerticalAlignment="Bottom" BorderBrush="#FF9E1E1E" Margin="0" />
+        <!--<GridSplitter Background="#FFE0E0E0" BorderBrush="#FF9E1E1E" VerticalAlignment="Bottom" />-->
 
     </Grid>
 </Page>
