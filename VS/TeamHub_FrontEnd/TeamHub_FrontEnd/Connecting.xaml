@@ -13,29 +13,143 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="397*"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="75"/>
-            <ColumnDefinition Width="21*"/>
-            <ColumnDefinition Width="50"/>
-        </Grid.ColumnDefinitions>
         <!-- <Label Content="&lt;Page Connecting&gt;" HorizontalAlignment="Left" VerticalAlignment="Top"/> 
         <Label Content="&lt;Page Connecting&gt;" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="131,195,0,0"/> -->
 
-        <Canvas Background="Gainsboro"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1" Grid.RowSpan="2"/>
-        <Canvas Background="Gainsboro"  Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="1" Grid.RowSpan="2"/>
-
-        <Canvas Background="WhiteSmoke" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Left" Width="50" Grid.RowSpan="2">
-            <Canvas.Effect>
-                <DropShadowEffect Direction="175" BlurRadius="8" ShadowDepth="9" Color="#FFDADADA"/>
-            </Canvas.Effect>
+        <Canvas Name="frm_Right" Background="Gainsboro"  Grid.Row="1" Grid.RowSpan="1" HorizontalAlignment="Right" Width="60">
+            <Canvas.Triggers>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ThicknessAnimation
+                                Storyboard.TargetName="frm_Browser"
+                                Storyboard.TargetProperty="Margin"
+                                From="0, 0, 40, 0" To="0, 0, 60, 0" Duration="0:0:0.15"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ThicknessAnimation
+                                Storyboard.TargetName="frm_Browser"
+                                Storyboard.TargetProperty="Margin"
+                                From="0, 0, 60, 0" To="0, 0, 40, 0" Duration="0:0:0.15"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Canvas.Triggers>
         </Canvas>
-        <Canvas Background="WhiteSmoke" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Right" Width="50" Grid.RowSpan="2">
-            <Canvas.Effect>
-                <DropShadowEffect Direction="5" BlurRadius="8" ShadowDepth="9" Color="#FFDADADA"/>
-            </Canvas.Effect>
-        </Canvas>
 
-        <Frame Background="WhiteSmoke"  Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1" Grid.RowSpan="2"/>
+        <Frame Name="frm_Browser" Background="White"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1" Grid.RowSpan="2" Margin="0,0,40,0">
+            <Frame.Effect>
+                <DropShadowEffect Direction="0" Color="#FFC7C7C7" BlurRadius="10"/>
+            </Frame.Effect>
+        </Frame>
+        
+        <Canvas Background="WhiteSmoke" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            
+            <Label Name="btn_Members" Content="成 员" Height="30" Width="60" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="20,0,0,0"
+                   HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Black" FontWeight="Bold" >
+                <Label.Triggers>
+                    <EventTrigger RoutedEvent="MouseEnter">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation 
+                                    Storyboard.TargetName="btn_Members"
+                                    Storyboard.TargetProperty="(Label.Foreground).(SolidColorBrush.Color)"
+                                    From="Black" To="Green" Duration="0:0:0.15"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="MouseLeave">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation 
+                                    Storyboard.TargetName="btn_Members"
+                                    Storyboard.TargetProperty="(Label.Foreground).(SolidColorBrush.Color)"
+                                    From="Green" To="Black" Duration="0:0:0.15"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Label.Triggers>
+            </Label>
+            
+            <Label Name="btn_Groups" Content="群 组" Height="30" Width="60" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="80,0,0,0" Foreground="Black">
+                <Label.Triggers>
+                    <EventTrigger RoutedEvent="MouseEnter">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation 
+                                    Storyboard.TargetName="btn_Groups"
+                                    Storyboard.TargetProperty="(Label.Foreground).(SolidColorBrush.Color)"
+                                    From="Black" To="Green" Duration="0:0:0.15"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="MouseLeave">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation 
+                                    Storyboard.TargetName="btn_Groups"
+                                    Storyboard.TargetProperty="(Label.Foreground).(SolidColorBrush.Color)"
+                                    From="Green" To="Black" Duration="0:0:0.15"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Label.Triggers>
+            </Label>
+            
+            <Label Name="btn_Broadcast" Content="广 播" Height="30" Width="60" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="140,0,0,0" Foreground="Black">
+                <Label.Triggers>
+                    <EventTrigger RoutedEvent="MouseEnter">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation 
+                                    Storyboard.TargetName="btn_Broadcast"
+                                    Storyboard.TargetProperty="(Label.Foreground).(SolidColorBrush.Color)"
+                                    From="Black" To="Green" Duration="0:0:0.15"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="MouseLeave">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation 
+                                    Storyboard.TargetName="btn_Broadcast"
+                                    Storyboard.TargetProperty="(Label.Foreground).(SolidColorBrush.Color)"
+                                    From="Green" To="Black" Duration="0:0:0.15"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Label.Triggers>
+            </Label>
+            
+            <Label Name="btn_Board" Content="白 板" Height="30" Width="60" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="200,0,0,0" Foreground="Black">
+                <Label.Triggers>
+                    <EventTrigger RoutedEvent="MouseEnter">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation 
+                                    Storyboard.TargetName="btn_Board"
+                                    Storyboard.TargetProperty="(Label.Foreground).(SolidColorBrush.Color)"
+                                    From="Black" To="Green" Duration="0:0:0.15"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="MouseLeave">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation 
+                                    Storyboard.TargetName="btn_Board"
+                                    Storyboard.TargetProperty="(Label.Foreground).(SolidColorBrush.Color)"
+                                    From="Green" To="Black" Duration="0:0:0.15"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Label.Triggers>
+            </Label>
+        </Canvas>
 
 
     </Grid>
